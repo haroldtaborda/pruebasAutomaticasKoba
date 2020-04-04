@@ -10,4 +10,8 @@ Feature: Ingresar App
   Scenario: 
     When Ingreso panel izquierdo "panelizquierdogestion"
     And Ingresar proceso de gestiones "gestionperfiles"
+    And Seleciono el primer registro
+    And Ingreso al menu registro "verdetalles"
+    And Doy clic en boton volver
+    #Then Cerrar Cesion
 

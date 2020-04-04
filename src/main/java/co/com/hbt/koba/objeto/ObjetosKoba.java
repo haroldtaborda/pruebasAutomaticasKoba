@@ -35,7 +35,7 @@ public class ObjetosKoba {
         //tabla primer registros tres puntos
         ActionsUtil.objetosPut("tresbotones", By.xpath("//tbody//tr[1]/td[1]//div[@class='row']"));
         //ver detalles dentro del los tres puntos
-        ActionsUtil.objetosPut("ver detalles", By.xpath("div[@class='dropdown-menu dropdown-primary fadeInDropdown']//span[@class='icon-pencil-3']"));
+        ActionsUtil.objetosPut("verdetalles", By.xpath("//div[@class='dropdown-menu dropdown-primary fadeInDropdown']//span[@class='icon-pencil-3']"));
         // boton volver 
         ActionsUtil.objetosPut("botonvoler", By.xpath("//button[contains(text(),'Volver')]"));
         

@@ -142,6 +142,18 @@ public class ControllerUtil {
 	    ActionsUtil.clic(driver, getObjetoToAction());
 	}
 
+	public void selecionarPrimerRegristro() {
+		publicarXpahtClic("tresbotones");
+	}
+
+	public void ingresarMenuRegistro(String nombrePanel) {
+		publicarXpahtClic(nombrePanel);
+	}
+
+	public void clicBotonVolver() {
+		publicarXpahtClic("botonvoler");
+	}
+
     
 }
 

@@ -210,4 +210,20 @@ public class StepDefinition {
         controllerUtil.ingresarProcesoGestiones(nombrePanel);
     }
     
+    @When("Seleciono el primer registro")
+    public void selecionarPrimerRegristro() {
+        controllerUtil.selecionarPrimerRegristro();
+    }
+    
+    @When("Ingreso al menu registro {string}")
+    public void ingresarMenuRegistro(String nombrePanel) {
+        controllerUtil.ingresarMenuRegistro(nombrePanel);
+    }
+    
+    @When("Doy clic en boton volver")
+    public void clicBotonVolver() {
+    	controllerUtil.esperarSegundos("5");
+        controllerUtil.clicBotonVolver();
+    }
+    
 }
