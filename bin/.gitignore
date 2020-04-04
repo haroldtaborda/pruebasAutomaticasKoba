@@ -1,0 +1,3 @@
+/target/
+/.recommenders/caches/identified-project-coordinates.json
+*.classpath
