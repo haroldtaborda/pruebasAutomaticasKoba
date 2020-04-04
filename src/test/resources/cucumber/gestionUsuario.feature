@@ -7,10 +7,6 @@ Feature: Ingresar App
   Background: 
     Given Init
     And Login en "url.login" con user "url.usser" en "Username" pass "url.pass" en "Password" clic en "Ingresar"
-  Scenario Outline: 
+  Scenario: 
     When Ingreso panel izquierdo "panelizquierdogestion"
     And Ingresar proceso de gestiones "gestionUsuario"
-
-    Examples: 
-      | ID |
-      |  1 |
