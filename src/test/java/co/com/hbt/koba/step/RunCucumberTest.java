@@ -1,8 +1,6 @@
 package co.com.hbt.koba.step;
 
 import java.io.File;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +10,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import co.com.hbt.koba.constans.ConsultasDinamicasConstans;
-import co.com.hbt.koba.dto.AutomatizacionesDTO;
-import co.com.hbt.koba.util.ActionsUtil;
 import co.com.hbt.koba.util.EmailUtil;
-import co.com.hbt.koba.util.NumeroConstans;
 import co.com.hbt.koba.util.OperacionesBD;
 import co.com.hbt.koba.util.PropertiesLoader;
 import co.com.hbt.koba.util.ReportesUtil;
@@ -24,7 +18,7 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/cucumber/prueba.feature", glue = {
+@CucumberOptions(features = "src/test/resources/cucumber/demo.feature", glue = {
         "co.com.hbt.koba" }, plugin = { "pretty", "html:target/cucumber", "json:target/cucumber.json",
                 "junit:target/cucumber.xml" })
 public class RunCucumberTest {
