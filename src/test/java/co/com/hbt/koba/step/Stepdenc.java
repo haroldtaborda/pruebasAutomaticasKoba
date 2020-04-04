@@ -41,11 +41,6 @@ public class Stepdenc {
         
     }
     
-    @Given("Cargo archivo {string} en {string}")
-    public void cargarArchivo(String archivo, String campo){
-        controllerUtil.cargarArchivo(archivo, campo);
-    }
-    
     @Given("Ingreso a {string}")
     public void ingresoA(String url){
         controllerUtil.irA(url);
@@ -122,6 +117,8 @@ public class Stepdenc {
     public void clicBotonTexto(String textoBoton) {
         controllerUtil.clicBotonTexto(textoBoton);
     }
+    
+    
 
     
     /**
