@@ -85,7 +85,7 @@ public class ControllerUtil {
         ActionsUtil.ejecutarScript(driver, "arguments[0].click();", getObjetoToAction());
     }
     public void clicLinkTexto(String texto) {
-        ActionsUtil.clickLinkTexto(driver, texto);
+    	 ActionsUtil.clickLinkTexto(driver, texto);
      }
     
     public void clicBotonTexto(String texto) {
