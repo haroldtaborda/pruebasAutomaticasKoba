@@ -56,7 +56,6 @@ public class ActionsUtil {
     private static final long DIEZ_MILISEGUNDOS = 10L;
     private static String baseURL;
     static String fechaSegundosMiligesundos;
-    static OperacionesBD operacionesBD = new OperacionesBD();
     static String idEjecucion;
     static String ejecucion;
     
@@ -965,7 +964,6 @@ public class ActionsUtil {
                     String urlActual=null;
                     urlActual=driver.getCurrentUrl();
                     //actualizo url antes error
-                    operacionesBD.updateTablasSalidaAntesError(urlActual, getIdEjecucion(),getEjecucion());
                     detallesProcesoFinal(esProcesoFinal,driver,urlActual);
                     existeError=Boolean.TRUE;
                     break;
@@ -1008,7 +1006,6 @@ public class ActionsUtil {
             cargandoFrameInterno(driver);
             takeSnapShot(driver, "ErrorProceso.png");
             urlVerDetalles=driver.getCurrentUrl();
-            operacionesBD.updateTablasSalida(urlActual,urlVerDetalles, getIdEjecucion(),getEjecucion());
             }
             }
         
@@ -1472,7 +1469,6 @@ public class ActionsUtil {
           String urlActual=null;
           urlActual=driver.getCurrentUrl();
           //actualizo url antes error
-          operacionesBD.updateTablasSalida(urlActual, getIdEjecucion(),getEjecucion());
       }
       catch (Exception e) {
        LOGGER.info("Error controlado");
@@ -1483,7 +1479,6 @@ public class ActionsUtil {
           String urlActual=null;
           urlActual=driver.getCurrentUrl();
           //actualizo url antes error
-          operacionesBD.updateTablasSalida(urlActual, getIdEjecucion(),getEjecucion());
       }
       catch (Exception e) {
        LOGGER.info("Error controlado");

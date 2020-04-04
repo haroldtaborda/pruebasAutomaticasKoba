@@ -77,7 +77,6 @@ public class ControllerUtil {
      * interno o externo
      */
     private String bdTipoEquipo;
-    static OperacionesBD operacionesBD = new OperacionesBD();
 
     private String numeroAntiguo; // Extracción número de telefono
     private String numeroNuevo; // Extracción número de telefono nuevo
@@ -2799,26 +2798,21 @@ public class ControllerUtil {
     public void guardarResultadoFlujo(String nombreFlujo, String idFLujoTabla) {
       //se guarda por BD
         ActionsUtil.setIdEjecucion(idFLujoTabla);
-        operacionesBD.abrirConexionBD();
         List<Object> parametros= asignarParametrosResultadoFlujo(nombreFlujo, idFLujoTabla);
-        operacionesBD.insertarRegistroAutomatizacion(parametros);
         listaIdsProcesados.add(idFLujoTabla);
         ReportesUtil.setListaIdsProcesados(listaIdsProcesados);
     }
     
     public void actualizarResultadoFlujo(String nombreFlujo, String idFLujoTabla) {
         //se guarda por BD
-          operacionesBD.abrirConexionBD();
           List<Object> parametros= asignarParametrosResultadoFlujo(nombreFlujo, idFLujoTabla);
           parametros.add(idFLujoTabla);
           parametros.add(fechaSegundosMilisegundos);
-          operacionesBD.actualizarRegistroAutomatizacion(parametros);
           actualizarRegistroProcesado(nombreFlujo, idFLujoTabla);
           
       }
 
     private void actualizarRegistroProcesado(String nombreFlujo, String idFLujoTabla) {
-        operacionesBD.abrirConexionBD();
         String consulta=null;
         if(nombreFlujo.equals("SUSPENCION_LINEA")){
             consulta=ConsultasDinamicasConstans.UPDATE_OTC_T_SUSPENDER_REANUDAR_ID;
@@ -2862,7 +2856,6 @@ public class ControllerUtil {
         else if(nombreFlujo.equals("CREAR_CLIENTE_EMPRESARIAL")){
             consulta=ConsultasDinamicasConstans.UPDATE_OTC_T_CLIENTE_EMPRESARIAL_ID;
         }
-        operacionesBD.updateTablasEntrada(consulta,ProcesadoEnum.PROCESADO.name(), Long.parseLong(idFLujoTabla));
         
         
     }
@@ -2982,104 +2975,6 @@ public class ControllerUtil {
 
     /**
      * 
-     * Método responsable
-     *
-     * @uthor hataborda <br>
-     *        Harold Taborda<br>
-     *        hataborda@heinsohn.com.co
-     *
-     * @date 23/01/2020
-     * @version 1.0
-     * @param tabla
-     * @param id
-     * @param nombreFlujo 
-     */
-    public Map<String, String> consultarTablaEntradaFlujo(String tabla, String id, String nombreFlujo) {
-        Map<String, String> mapaEntradaBD= new HashMap<>();
-        operacionesBD.abrirConexionBD();
-        String consulta=null;
-        List<Object> params= new ArrayList<>();
-        params.add(Long.parseLong(id));
-        if(TablaEnum.OTC_T_TRANSFERENCIA_BENEFICIARIO.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_TRASFERENCIA_BENEFICIARIO_ID;
-        }
-        else if(TablaEnum.OTC_T_ACTIVACION_SLO.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_ACTIVACION_SLO_ID;
-        }
-        else if(TablaEnum.OTC_T_ALTAS_LINEAS.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_ALTAS_LINEAS_ID;
-        }
-        else if(TablaEnum.OTC_T_BAJA.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_BAJA_ID;
-        }
-        else if(TablaEnum.OTC_T_CABMIO_SIM.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_CABMIO_SIM_ID;
-        }
-        else if(TablaEnum.OTC_T_CAMBIO_NUMERO.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_CAMBIO_NUMERO_ID;
-        }
-        else if(TablaEnum.OTC_T_CAMBIO_PLAN.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_CAMBIO_PLAN_ID;
-        }
-        else if(TablaEnum.OTC_T_CREAR_CLIENTE.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_CREAR_CLIENTE_ID;
-        }
-        else if(TablaEnum.OTC_T_FAC_EQUIPO_SIN_LINEA.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_FAC_EQUIPO_SIN_LINEA_ID;
-        }
-        else if(TablaEnum.OTC_T_RENOVACION_EQUIPO.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_RENOVACION_EQUIPO_ID;
-        }
-        else if(TablaEnum.OTC_T_SUSPENDER_REANUDAR.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_SUSPENDER_REANUDAR_ID;
-        }
-        else if(TablaEnum.OTC_T_FACTURAS_MISCELANEAS.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_FACTURAS_MISCELANEAS_ID;
-        }
-        else if(TablaEnum.OTC_T_DISPUTAS_Y_NOTACREDITO.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_DISPUTAS_Y_NOTACREDITO_ID;
-        }
-         else if(TablaEnum.OTC_T_CLIENTE_EMPRESARIAL.name().equals(tabla)){
-            consulta=ConsultasDinamicasConstans.SELECT_OTC_T_CLIENTE_EMPRESARIAL_ID;
-        }
-
-        ResultSet rs = operacionesBD.ejecutarConsulta(consulta, params);
-        try {
-             if (rs != null && rs.next()) {
-                 llenarMapa(rs,mapaEntradaBD);
-                }
-             else{
-                 operacionesBD.cerrarStatement();
-                 cerrarNavegador();
-             }
-        } catch (SQLException e) {
-            LOGGER.error("Se presento un error al consultar las propiedades", e);
-        } finally {
-            if (rs != null)
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    LOGGER.error("Error cerrando el resultSet al init", e);
-                }
-        }
-        operacionesBD.cerrarStatement();
-        String procesado=mapaEntradaBD.get("procesado");
-        properties.setProperty("isProcesado", "false");
-        if(procesado!=null && procesado.equalsIgnoreCase(ProcesadoEnum.PROCESADO.name())){
-            LOGGER.info("Se finaliza el flujo ya que el registro ya fue procesado");
-            properties.setProperty("isProcesado", "true");
-            cerrarNavegador();
-        }
-        //se guarda el resultado
-        guardarResultadoFlujo(nombreFlujo, mapaEntradaBD.get("id"));
-        return mapaEntradaBD;
-        
-    }
-   
-   
-   
-    /**
-     * 
      * Método responsable el mapa con el resultado de la consulta
      *
      * @uthor hataborda <br>
@@ -3154,52 +3049,6 @@ public class ControllerUtil {
         
     }
 
-    /**
-     * 
-     * Método responsable sacar los campos finales de la pantalla resumen
-     *
-     * @uthor hataborda <br>
-     *        Harold Tabord <br>
-     *        hataborda@heinsohn.com.co
-     *
-     * @date 27/01/2020
-     * @version 1.0
-     * @param idEjecucion
-     * @param ejecucion
-     */
-    public void sacoCampsoPantallaFinal(String idEjecucion, String ejecucion) {
-        ActionsUtil.setIdEjecucion(idEjecucion);
-        ActionsUtil.setEjecucion(ejecucion);
-        sharedObjet("tabladatosfinales");
-        WebElement valorCampo;
-        try {
-            valorCampo = ActionsUtil.obtenerElementoReferenciaTabla(driver, getObjetoToAction(),
-                    "Procesado cuando");
-        procesadoCuando = valorCampo.getText();
-        valorCampo = ActionsUtil.obtenerElementoReferenciaTabla(driver, getObjetoToAction(), "Estado de orden de venta");
-        estadoOrden = valorCampo.getText();
-        valorCampo = ActionsUtil.obtenerElementoReferenciaTabla(driver, getObjetoToAction(), "Tipo de proceso");
-        tipoProceso = valorCampo.getText();
-        WebElement a= driver.findElement(By.xpath("//div[contains(text(),'Confirmado por')]"));
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].scrollIntoView(true);", a);
-        ActionsUtil.sleepSeconds(1);
-        valorCampo = ActionsUtil.obtenerElementoReferenciaTabla(driver, getObjetoToAction(), "Confirmado por");
-        confirmadoPor = valorCampo.getText();
-        valorCampo = ActionsUtil.obtenerElementoReferenciaTabla(driver, getObjetoToAction(), "Bodega por defecto");
-        bodegaDefecto = valorCampo.getText();
-        valorCampo = ActionsUtil.obtenerElementoReferenciaTabla(driver, getObjetoToAction(), "Canal de distribución");
-        canalDistribucion = valorCampo.getText();
-        valorCampo = ActionsUtil.obtenerElementoReferenciaTabla(driver, getObjetoToAction(), "Fecha de envío");
-        fechaEnvio = valorCampo.getText();
-        operacionesBD.updateTablasSalida(procesadoCuando, estadoOrden,bodegaDefecto,canalDistribucion,fechaEnvio,confirmadoPor, idEjecucion,ejecucion);
-        } catch (Exception e) {
-            LOGGER.error("Se presento un error al actualizar la tabla de salida ", e);
-        }
-    
-        
-    }
-    
     public void mostarOperador() {
         // TODO elimiar al final de la evidencias
         String usuario = properties.getProperty("nc.user");
@@ -3785,17 +3634,6 @@ public class ControllerUtil {
         }
     
 
-    public void guardarBd(String idEjecucion, String ejecucion) {
-        try {
-            ActionsUtil.setIdEjecucion(idEjecucion);
-            ActionsUtil.setEjecucion(ejecucion);
-            operacionesBD.updateTablasSalidaCliente(bdCategoria,bdNombre,tipo_cuenta,ciclo,idEjecucion,ejecucion);
-        }catch (Exception e) {
-            LOGGER.error("Se presento un error al guardar la tabla de salida ", e);
-        }
-        
-    }
-
     public void esperarCargaBotonProducto() {
         String texto = properties.getProperty("boton.productos");
         // TODO mover a la clase ObjetosPlmLogin.java
@@ -4195,36 +4033,6 @@ public class ControllerUtil {
         ActionsUtil.sleepSeconds(1);
     }
 
-    public void sacarUrlErrorPantallaFinal(String idEjecucion, String ejecucion) {
-        sharedObjet("tabladatosfinales");
-        WebElement valorCampo;
-        try {
-        if(estadoOrden==null || tipoProceso == null || estadoOrden.isEmpty() || tipoProceso.isEmpty() ||
-                !estadoOrden.equalsIgnoreCase("Procesado") || !tipoProceso.equalsIgnoreCase("Completado")){
-        valorCampo = ActionsUtil.obtenerElementoReferenciaTabla(driver, getObjetoToAction(), "Proceso");
-        WebElement link = valorCampo.findElement(By.xpath(".//a"));
-        String linkBodegas=ActionsUtil.obteberLinkElemento(link);
-        driver.get(linkBodegas);
-        ActionsUtil.sleepSeconds(1);
-        esperarCargaPantalla();
-        ActionsUtil.cargandoFrameInterno(driver);
-        ActionsUtil.switchFrameObject(driver);
-        clicLinkTexto("Errores");
-        esperarCargaPantalla();
-        ActionsUtil.cargandoFrameInterno(driver);
-        ActionsUtil.takeSnapShot(driver, "ErrorPosterior.png");
-        urlError=driver.getCurrentUrl();
-        }
-        else{
-            urlError="N/A";
-        }
-      //se actualizan
-        operacionesBD.updateTablasSalida(urlError, idEjecucion,ejecucion);
-        
-        } catch (Exception e) {
-            LOGGER.error("Se presento un error al actualizar la tabla de salida ", e);
-        }
-    }
 
     /**
      * Método responsable de asignar el ciclo de facturación al crear la cuenta
@@ -4386,16 +4194,6 @@ public class ControllerUtil {
         tomarFoto("FacturaNotaCredito.png");
     }
 
-    public void guardarBdDisputasNotaCredito(String idEjecucion, String ejecucion) {
-        try {
-            ActionsUtil.setIdEjecucion(idEjecucion);
-            ActionsUtil.setEjecucion(ejecucion);
-            operacionesBD.updateTablasSalidaDisputasNotaCredito(facturaDisputa,disputaGenerada, facturaNotaCredito, 
-                    urlDisputa, urlNotaCredio, urlDocumentoNotaCredito, idEjecucion,ejecucion);
-        }catch (Exception e) {
-            LOGGER.error("Se presento un error al guardar la tabla de salida ", e);
-        }
-    }
     /**
      * Método responsable de asignar los valores al formulario Nuevo Cliente
      * Empresarial.
@@ -4668,48 +4466,6 @@ public class ControllerUtil {
         ActionsUtil.sleepSeconds(1);
     }
 
-    /**
-     * Método responsable de obtener los campos de salida del proceso cliente
-     * empresarial e invocar la lógica para almacenar los en base de datos.
-     *
-     * @uthor hataborda <br>
-     *        Harold Taborda <br>
-     *        hataborda@heinsohn.com.co
-     *
-     * @date 14/02/2020
-     * @version 1.0
-     * @param idEjecucion identificador del registro de la tabla de entrada
-     * @param ejecucion   número de ejecución de la tabla de salida
-     * @return 
-     * @throws Exception 
-     */
-    public void obtenerCamposPantallaResumenClienteEmpresarial(
-            final String idEjecucion, final String ejecucion) throws Exception {
-        
-        By boton = By.xpath("//button[text()='Editar']");
-        ActionsUtil.esperarPoderClicBy(driver, boton);
-        
-        sharedObjet("tabladatosfinales");
-        tablaMapa = ActionsUtil.obtenerMapaTabla(driver,
-                getObjetoToAction());
-        
-        bdNumeroCuentaCliente = obtenerValorTablaMapa(tablaMapa,"Número de cuenta del cliente");
-        bdCategoria = obtenerValorTablaMapa(tablaMapa,"Categoría de cliente");
-        bdNombre = obtenerValorTablaMapa(tablaMapa,"Nombre legal");
-        
-        try {
-            
-            ActionsUtil.setIdEjecucion(idEjecucion);
-            ActionsUtil.setEjecucion(ejecucion);
-            operacionesBD.updateTablaSalidaClienteEmpresarial(
-                    bdNumeroCuentaCliente, bdCategoria, bdNombre, idEjecucion,
-                    ejecucion);
-        } catch (Exception e) {
-            LOGGER.error(
-                    "Se presento un error al actualizar la tabla de salida ",
-                    e);
-        }
-    }
         
     private String obtenerValorTablaMapa(final Map<String, WebElement> tablaMapa,
             final String referencia) throws Exception {

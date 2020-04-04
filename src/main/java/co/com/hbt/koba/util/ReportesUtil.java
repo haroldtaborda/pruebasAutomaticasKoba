@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +25,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import co.com.hbt.koba.constans.ConsultasDinamicasConstans;
 import co.com.hbt.koba.constans.FormatConstans;
 import co.com.hbt.koba.dto.AutomatizacionesDTO;
 import co.com.hbt.koba.enums.FlujoEnum;
@@ -44,7 +41,6 @@ import co.com.hbt.koba.enums.FlujoEnum;
  */
 public class ReportesUtil {
 
-    static OperacionesBD operacionesBD = new OperacionesBD();
     static PropertiesLoader properties = PropertiesLoader.getInstance();
     static Logger LOGGER = LoggerFactory.getLogger(ReportesUtil.class);
     static String fechaSegundosMiligesundos;
@@ -88,7 +84,7 @@ public class ReportesUtil {
                 "FACTURA_DISPUTA", "NUMERO_DISPUTA", "NUMERO_NOTA_CREDITO", "URL_AJUSTE_DISPUTA", "URL_DISPUTA", "URL_DOCUMENTO_NOTA_CREDITO"};
 
         // consulto la BD
-        List<AutomatizacionesDTO> automatizaciones = consultarAutomatizaciones();
+        List<AutomatizacionesDTO> automatizaciones = new ArrayList<AutomatizacionesDTO>();
 
         CellStyle headerStyle = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
@@ -1076,76 +1072,6 @@ public class ReportesUtil {
 
     /**
      * 
-     * Método responsable
-     *
-     * @uthor hataborda <br>
-     *        Harold Taborda <br>
-     *        hataborda@heinsohn.com.co
-     *
-     * @date 20/02/2020
-     * @version 1.0
-     * @return
-     */
-    private static List<AutomatizacionesDTO> consultarAutomatizaciones() {
-        operacionesBD.abrirConexionBD();
-        List<AutomatizacionesDTO> listaDTO = new ArrayList<>();
-        List<Object> param = new ArrayList<>();
-        param.add(getFechaSegundosMiligesundos());
-        ResultSet rs = operacionesBD
-                .ejecutarConsulta(ConsultasDinamicasConstans.CONSULTAR_TABLA_AUTOMATIZACIONES_ACTUAL, param);
-        try {
-            AutomatizacionesDTO dto = null;
-            int j=1;
-            if (rs != null) {
-                while (rs.next()) {
-                    j=1;
-                    dto = new AutomatizacionesDTO(rs.getLong(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getDate(j++), rs.getDate(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++), rs.getString(j++),
-                            rs.getString(j++),rs.getString(j++));
-                    listaDTO.add(dto);
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Se presento un error al consultar las propiedades", e);
-        } finally {
-            if (rs != null)
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    LOGGER.error("Error cerrando el resultSet al init", e);
-                }
-        }
-        operacionesBD.cerrarStatement();
-        return listaDTO;
-
-    }
-
-
-    /**
-     * 
      * Método responsable consultar las evidencias generadas en el proceso
      *
      * @uthor hataborda <br>
@@ -1198,61 +1124,6 @@ public class ReportesUtil {
      */
     public static void setListaIdsProcesados(List<String> listaIdsProcesados) {
         ReportesUtil.listaIdsProcesados = listaIdsProcesados;
-    }
-
-    /**
-     * 
-     * Método responsable consultar la ejecucion final del flujo
-     *
-     * @uthor hataborda <br>
-     * Harold Tabord <br>
-     * hataborda@heinsohn.com.co
-     *
-     * @date 27/01/2020
-     * @version 1.0
-     * @return
-     */
-    public static List<AutomatizacionesDTO> consultarEjecucionFlujos() {
-        List<String> lista = getListaIdsProcesados();
-        //lista = new ArrayList<>();
-        //lista.add("60");
-        if (lista == null || lista.isEmpty()) {
-            return null;
-        }
-        operacionesBD.abrirConexionBD();
-        List<AutomatizacionesDTO> retorno = new ArrayList<>();
-        ResultSet rs = null;
-        try {
-            rs = operacionesBD.ejecutarConsultaFlujoFinal(lista, getFechaSegundosMiligesundos());
-            if (rs != null) {
-                AutomatizacionesDTO salida = null;
-                while (rs.next()) {
-                    salida = new AutomatizacionesDTO();
-                    salida.setUrlOrden(rs.getString(NumeroConstans.UNO));
-                    salida.setIdEjecucion(rs.getString(NumeroConstans.DOS));
-                    salida.setEjecucion(rs.getString(NumeroConstans.TRES));
-                    salida.setFlujo(rs.getString(NumeroConstans.CUATRO));
-                    salida.setIdentificacion(rs.getString(NumeroConstans.CINCO));
-                    salida.setNumeroCuentaPrepago(rs.getString(NumeroConstans.SEIS));
-                    salida.setNumeroCuentaPostpago(rs.getString(NumeroConstans.SIETE));
-                    salida.setNumeroCentaPostAdvance(rs.getString(NumeroConstans.OCHO));
-                    salida.setNumeroLinea(rs.getString(NumeroConstans.NUEVE));
-                    retorno.add(salida);
-
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Se presento un error al consultar las propiedades", e);
-        } finally {
-            if (rs != null)
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    LOGGER.error("Error cerrando el resultSet al init", e);
-                }
-        }
-        operacionesBD.cerrarStatement();
-        return retorno;
     }
 
     /**

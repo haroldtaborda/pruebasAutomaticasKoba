@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import co.com.hbt.koba.util.EmailUtil;
-import co.com.hbt.koba.util.OperacionesBD;
 import co.com.hbt.koba.util.PropertiesLoader;
 import co.com.hbt.koba.util.ReportesUtil;
 import cucumber.api.CucumberOptions;
@@ -24,7 +23,6 @@ import cucumber.api.junit.Cucumber;
 public class RunCucumberTest {
 
     static Logger LOGGER = LoggerFactory.getLogger(RunCucumberTest.class);
-    static OperacionesBD operacionesBD = new OperacionesBD();
     static PropertiesLoader properties = PropertiesLoader.getInstance();
 
     @BeforeClass
