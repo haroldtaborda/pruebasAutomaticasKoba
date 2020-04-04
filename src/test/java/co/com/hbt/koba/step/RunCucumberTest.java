@@ -32,7 +32,7 @@ public class RunCucumberTest {
     
     @AfterClass
     public static void after() {
-        eventosFinalesReportes();
+      //  eventosFinalesReportes();
     }
 
     private static void eventosFinalesReportes() {

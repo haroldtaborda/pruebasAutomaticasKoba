@@ -96,6 +96,8 @@ public class Stepdenc {
             String campoContrasenia, String clic) {
         // voy a la url login
         controllerUtil.irA(url);
+        //esperar
+        controllerUtil.esperarSegundos("2");
         // ingreso el usuario
         controllerUtil.ingresarTextoProperties(campoUsuario, usuario);
         // ingreso la contrasenia

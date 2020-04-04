@@ -158,6 +158,7 @@ public class ControllerUtil {
     }
 
     public void irA(String url) {
+    	url = properties.getProperty(url);
         String urlActualizada = ActionsUtil.updateUrlWithBaseUrlIfDefined(url);
         ActionsUtil.goToWebSide(driver, urlActualizada);
     }

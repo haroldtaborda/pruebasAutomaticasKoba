@@ -1,14 +1,14 @@
 @ingresar
-Feature: dar de alta
+Feature: Ingresar App
   COMO usuario
-  QUIERO dar de alta un pre o pos
-  PARA obtener orden de venta, esado y url
+  QUIERO ingresar a KOBA
+  PARA verificar el login
 
   Background: 
     Given Init
-    And Login en "url.login" con user "url.usser" en "Username" pass "url.pass" en "Password" clic en "Ingresar"
 
-  Scenario Outline: Alta lineas pospago/prepago
+  Scenario Outline: 
+     When Login en "url.login" con user "url.usser" en "Username" pass "url.pass" en "Password" clic en "Ingresar"
 
     Examples: 
       | ID |
