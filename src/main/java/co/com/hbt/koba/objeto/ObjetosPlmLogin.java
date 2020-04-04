@@ -24,7 +24,7 @@ public class ObjetosPlmLogin {
     	/* pagina de login*/
         ActionsUtil.objetosPut("username", By.id("username"));
         ActionsUtil.objetosPut("password", By.id("password"));
-        ActionsUtil.objetosPut("botonIngresar", By.xpath("//button[@class='btn btn-primary text-uppercase mb-3 mb-sm-4']"));
+        ActionsUtil.objetosPut("Ingresar", By.xpath("//button[@class='btn btn-primary text-uppercase mb-3 mb-sm-4']"));
 
     }
 }

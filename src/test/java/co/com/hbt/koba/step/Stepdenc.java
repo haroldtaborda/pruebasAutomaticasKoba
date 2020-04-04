@@ -91,11 +91,11 @@ public class Stepdenc {
      * @param campoContrasenia
      * @param clic
      */
-    @Given("Login en {string} {string} {string} con user {string} en {string} pass {string} en {string} clic en {string}")
-    public void login(String urlIp, String puerto, String path, String usuario, String campoUsuario, String contrasenia,
+    @Given("Login en {string} con user {string} en {string} pass {string} en {string} clic en {string}")
+    public void login(String url, String usuario, String campoUsuario, String contrasenia,
             String campoContrasenia, String clic) {
         // voy a la url login
-        controllerUtil.irA(urlIp, puerto, path);
+        controllerUtil.irA(url);
         // ingreso el usuario
         controllerUtil.ingresarTextoProperties(campoUsuario, usuario);
         // ingreso la contrasenia
