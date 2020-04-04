@@ -17,7 +17,7 @@ import cucumber.api.java.en.When;
  * @date 17/01/2020
  * @version 1.0
  */
-public class Stepdenc {
+public class StepDefinition {
     ControllerUtil controllerUtil;
     PageDefault page;
     Map<String, String> mapaParametros=null;
@@ -189,9 +189,9 @@ public class Stepdenc {
        controllerUtil.tomarFoto(nombreFoto);
         
     }
-    @Given("Cambio de pestania")
-    public void cambiarPestania() {
-        controllerUtil.cambiarPestania();
+    @Given("Cambio de pestania {string}")
+    public void cambiarPestania(String nombre) {
+        controllerUtil.cambiarPestania(nombre);
         
     }
     @Given("Validar cargando")
