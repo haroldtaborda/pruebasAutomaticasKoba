@@ -18,14 +18,19 @@ import co.com.hbt.koba.util.ActionsUtil;
 public class ObjetosPlmLogin {
     
     /**
-     * Constructor
+     * Constructor nos nombres deben ser todos en minuscula
      */
     public ObjetosPlmLogin() {
     	/* pagina de login*/
         ActionsUtil.objetosPut("username", By.id("username"));
         ActionsUtil.objetosPut("password", By.id("password"));
-        ActionsUtil.objetosPut("Ingresar", By.xpath("//button[@class='btn btn-primary text-uppercase mb-3 mb-sm-4']"));
-
+        ActionsUtil.objetosPut("ingresar", By.xpath("//button[@class='btn btn-primary text-uppercase mb-3 mb-sm-4']"));
+        /* panel izquierdo*/
+        ActionsUtil.objetosPut("panelizquierdogestion", By.xpath("//label[contains(text(),'Gestiones')]"));
+        /*procesos de gestiones perfil*/
+        ActionsUtil.objetosPut("gestionperfiles", By.xpath("//b[contains(text(),'PERFILES')]"));
+        /*procesos de gestiones perfil*/
+        ActionsUtil.objetosPut("gestionusuario", By.xpath("//b[contains(text(),'USUARIOS')]"));
     }
 }
 
