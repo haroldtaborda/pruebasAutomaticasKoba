@@ -4497,6 +4497,20 @@ public class ControllerUtil {
         ActionsUtil.esperarPoderClicBy(driver, boton);
         ActionsUtil.clic(driver, boton);
     }
+    
+    public void ingresarPanelIzquierdo(String nombrePanel) {
+		publicarXpahtClic(nombrePanel);
+		
+	}
+
+	public void ingresarProcesoGestiones(String nombrePanel) {
+		publicarXpahtClic(nombrePanel);
+	}
+
+	private void publicarXpahtClic(String nombrePanel) {
+		sharedObjet(nombrePanel);
+	    ActionsUtil.clic(driver, getObjetoToAction());
+	}
 
 }
 

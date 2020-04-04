@@ -203,4 +203,14 @@ public class Stepdenc {
         
     }
     
+    @When("Ingreso panel izquierdo {string}")
+    public void ingresarPanelIzquierdo(String nombrePanel) {
+        controllerUtil.ingresarPanelIzquierdo(nombrePanel);
+    }
+    
+    @When("Ingresar proceso de gestiones {string}")
+    public void ingresarProcesoGestiones(String nombrePanel) {
+        controllerUtil.ingresarProcesoGestiones(nombrePanel);
+    }
+    
 }
