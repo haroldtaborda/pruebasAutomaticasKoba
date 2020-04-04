@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import co.com.hbt.koba.objeto.ObjetosPlmLogin;
+import co.com.hbt.koba.objeto.ObjetosKoba;
 
 public class ControllerUtil {
 
@@ -21,7 +21,7 @@ public class ControllerUtil {
         this.page=page;
         if (ActionsUtil.objetosIsEmpty()) {
             LOGGER.info("Inicialización de objetos");
-            new ObjetosPlmLogin();
+            new ObjetosKoba();
         }
     }
 
@@ -90,7 +90,6 @@ public class ControllerUtil {
     
     public void clicBotonTexto(String texto) {
         texto = properties.getProperty(texto);
-        // TODO mover a la clase ObjetosPlmLogin.java
         By boton = By.xpath("//button[text()='" + texto + "']");
         ActionsUtil.esperarPoderClicBy(driver, boton);
         ActionsUtil.clic(driver, boton);
@@ -120,13 +119,8 @@ public class ControllerUtil {
         ActionsUtil.takeSnapShot(driver, nombreFoto);
         
     }
-    public void cambiarPestania() {
-        WebElement elemento=driver.findElement(By.xpath("//div[contains(text(),'Elementos de orden')]"));
-        elemento.click();
-        
-    }
-    public void cambiarPestaniaPrincipal() {
-        WebElement elemento=driver.findElement(By.xpath("//div[contains(text(),'Resumen')]"));
+    public void cambiarPestania(String xpath) {
+        WebElement elemento=driver.findElement(By.xpath(xpath));
         elemento.click();
         
     }

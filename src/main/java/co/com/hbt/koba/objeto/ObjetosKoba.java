@@ -15,12 +15,12 @@ import co.com.hbt.koba.util.ActionsUtil;
  * @date 16/01/2020
  * @version 1.0
  */
-public class ObjetosPlmLogin {
+public class ObjetosKoba {
     
     /**
      * Constructor nos nombres deben ser todos en minuscula
      */
-    public ObjetosPlmLogin() {
+    public ObjetosKoba() {
     	/* pagina de login*/
         ActionsUtil.objetosPut("username", By.id("username"));
         ActionsUtil.objetosPut("password", By.id("password"));
